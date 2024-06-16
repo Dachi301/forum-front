@@ -51,3 +51,17 @@ export interface Tags {
 //     question_id: number
 //     tag_id: number
 // }
+
+// Sign up and Sign in types
+
+export interface SignUpInputTypes {
+    username: string;
+    email: string;
+    password: string;
+    repeat_password: string;
+}
+
+export interface LogInInputTypes {
+    email: string;
+    password: string;
+}

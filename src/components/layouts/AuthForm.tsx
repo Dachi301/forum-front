@@ -4,11 +4,13 @@ interface PropsTypes {
   title: string
   body: string
   children: React.ReactNode
+  onSubmit: React.FormEventHandler<HTMLFormElement>
 }
 
-function AuthForm({ title, body, children }: PropsTypes) {
+function AuthForm({ title, body, children, onSubmit }: PropsTypes) {
   return (
     <form
+        onSubmit={onSubmit}
       className={
         'flex flex-col gap-5 items-start justify-center px-[100px] basis-[40%] bg-[#FAFAFA]'
       }
