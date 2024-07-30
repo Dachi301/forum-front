@@ -6,13 +6,13 @@ export interface QuestionType {
     user_id: number
     created_at: string
     updated_at: string
-    user: User
+    user: UserInfoType
     comments: QuestionComment[]
     likes: QuestionLike[]
     tags: Tags[]
 }
 
-export interface User {
+export interface UserInfoType {
     id: number
     username: string
     email: string
@@ -36,7 +36,7 @@ export interface QuestionLike {
     updated_at: string
     user_id: number
     question_id: number
-    user: User
+    user: UserInfoType
 }
 
 export interface Tags {
@@ -58,10 +58,10 @@ export interface SignUpInputTypes {
     username: string;
     email: string;
     password: string;
-    repeat_password: string;
+    password_confirmation: string;
 }
 
 export interface LogInInputTypes {
-    email: string;
+    username: string;
     password: string;
 }

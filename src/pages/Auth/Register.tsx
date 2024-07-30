@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 // Validation Libs
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {yupResolver} from "@hookform/resolvers/yup";
@@ -6,10 +8,14 @@ import * as yup from 'yup'
 // Types
 import {SignUpInputTypes} from "@/types";
 
+// UI Components
 import MainLayout from "@/components/layouts/MainLayout.tsx";
 import AuthForm from "@/components/layouts/AuthForm.tsx";
 import Button from "@/components/buttons/Button.tsx";
 import AuthInput from "@/components/inputs/AuthInput.tsx";
+
+// Axios Instance
+import createAxiosInstance from "@/axios/axios-instance.ts";
 
 const schema = yup.object().shape({
     username: yup
@@ -29,7 +35,7 @@ const schema = yup.object().shape({
         .string()
         .required("Password is required")
         .min(6, "Password length should be at least 6 characters"),
-    repeat_password: yup
+    password_confirmation: yup
         .string()
         .required("Confirm Password is required")
         .min(6, "Password length should be at least 6 characters")
@@ -37,12 +43,24 @@ const schema = yup.object().shape({
 })
 
 function Register() {
-    const { handleSubmit, control, formState: {errors} } = useForm<SignUpInputTypes>({
+    const {reset, handleSubmit, control, formState: {errors} } = useForm<SignUpInputTypes>({
         resolver: yupResolver(schema)
     });
+    const axiosInstance = createAxiosInstance()
+    const navigate = useNavigate()
 
     const onSubmit: SubmitHandler<SignUpInputTypes> = (data) => {
         console.log(data);
+        axiosInstance.post('/auth/signup', {
+            ...data
+        }).then(function (response) {
+            console.log(response);
+        })
+            .catch(function (error) {
+                console.log(error);
+            });
+        reset()
+        navigate('/auth/login')
     };
 
     return (
@@ -56,13 +74,14 @@ function Register() {
                     <AuthInput control={control} name="username" label="Username" errorResponse={errors.username?.message} />
                     <AuthInput control={control} name="email" label="Email" errorResponse={errors.email?.message} />
                     <AuthInput control={control} name="password" label="Password" errorResponse={errors.password?.message} type="password" />
-                    <AuthInput control={control} name="repeat_password" label="Confirm Password" errorResponse={errors.repeat_password?.message} type="password" />
+                    <AuthInput control={control} name="password_confirmation" label="Confirm Password" errorResponse={errors.password_confirmation?.message} type="password" />
                     <Button
                         onClick={() => {}}
                         type="submit"
                         className="w-full py-3 bg-[#F48023] rounded uppercase font-black text-white text-center text-xs"
                         text="Register"
                     />
+                    {/*<h1 className={'text-green-500'}>User Created Successfully!</h1>*/}
                 </AuthForm>
                 <div className="basis-[60%]">
                     <img className="w-full h-screen" src="/images/register-img.jpg" alt="Register Image" />

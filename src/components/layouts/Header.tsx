@@ -1,12 +1,23 @@
 import ForumLogo from "@/assets/icons/ForumLogo.tsx";
 import Button from "@/components/buttons/Button.tsx";
 import UserRegistrationLogo from "@/assets/icons/UserRegistrationLogo.tsx";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
+import {useSelector} from "react-redux";
+import createAxiosInstance from "@/axios/axios-instance.ts";
+import {useCookies} from "react-cookie";
+import {clearUserData} from "@/rdx/slices/userSlice.ts";
+import {store} from "@/rdx/store.ts";
+// import {store} from "@/rdx/store.ts";
+// import {setUserData} from "@/rdx/slices/userSlice.ts";
 
 function Header() {
-    let userIsAuthenticated = false
+    // const [cookies, setCookie] = useCookies(['user'])
+    const [cookies, setCookie, removeCookie] = useCookies(['user'])
     const [showProfileMenu, setShowProfileMenu] = useState(false)
+    const user = useSelector((state) => state.user)
+    const axiosInstance = createAxiosInstance(cookies.user?.token)
+    const navigate = useNavigate()
 
     return (
         <div
@@ -15,7 +26,7 @@ function Header() {
                 <ForumLogo/>
                 <h1 className={'tracking-wider'}>Fo<span className={'font-bold'}>rum</span></h1>
             </Link>
-            {userIsAuthenticated ? (
+            {Object.keys(user).length !== 0 ? (
                 <>
                     <div className={'flex items-center gap-4'}>
                         <Link to={'/add-question'}>
@@ -52,9 +63,21 @@ function Header() {
                                         </li>
                                     </ul>
                                     <div className="py-2">
-                                        <a href="#"
-                                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign
-                                            out</a>
+                                        <button
+                                           onClick={() => {
+                                               axiosInstance.get('/auth/logout')
+                                                   .then(() => {
+                                                       console.log('Logout successful');
+                                                   })
+                                                   .catch((error) => {
+                                                       console.error('Logout failed: ', error);
+                                                   });
+                                               removeCookie('user',{path:'/'});
+                                               store.dispatch(clearUserData())
+                                               navigate('/auth/login')
+                                           }}
+                                           className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                        >Sign out</button>
                                     </div>
                                 </div>
                             )}

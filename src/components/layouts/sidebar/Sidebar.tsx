@@ -5,9 +5,11 @@ import LikesIcon from "@/assets/icons/LikesIcon.tsx";
 import SidebarMenuItem from "@/components/layouts/sidebar/SidebarMenuItem.tsx";
 import SidebarPersonalNavigatorItem from "@/components/layouts/sidebar/SidebarPersonalNavigatorItem.tsx";
 import QuestionsMenuIcon from "@/assets/icons/QuestionsMenuIcon.tsx";
+import {useSelector} from "react-redux";
 
 function Sidebar() {
     let userIsAuthenticated = false
+    const user = useSelector((state) => state.user)
 
     return (
         <>
@@ -31,7 +33,7 @@ function Sidebar() {
                         <h1 className={'text-xs font-bold text-[#808080] uppercase mb-[10px]'}>Menu</h1>
                         <SidebarMenuItem menuItem={'Questions'} icon={<QuestionsMenuIcon/>}/>
                     </div>
-                    {userIsAuthenticated && (
+                    {Object.keys(user).length !== 0  && (
                         <div className={'flex flex-col'}>
                             <h1 className={'text-xs font-bold text-[#808080] uppercase mb-[10px]'}>Personal
                                 Navigator</h1>
