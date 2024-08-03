@@ -16,6 +16,7 @@ import { Provider } from 'react-redux'
 // Redux
 import { store } from "@/rdx/store.ts";
 import {setUserData} from "@/rdx/slices/userSlice.ts";
+import ProtectedRoute from "@/utils/ProtectedRoute.tsx";
 
 function App() {
     const [cookies, setCookie] = useCookies(['user'])
@@ -26,7 +27,7 @@ function App() {
         setCookie('user', user, { path: '/', expires })
     }
 
-    const {data, loading, error} = useFetch<any>('/me');
+    const {data} = useFetch<any>('/me');
 
     useEffect(() => {
         store.dispatch(setUserData(data?.data))
@@ -36,10 +37,22 @@ function App() {
         createRoutesFromElements(
             <Route>
                 <Route index element={<Home />}/>
-                <Route path="/auth/login" element={<Login onLogin={handleLogin}/>}/>
-                <Route path="/auth/register" element={<Register/>}/>
+                <Route path="/auth/login" element={
+                    <ProtectedRoute>
+                        <Login onLogin={handleLogin}/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/auth/register" element={
+                    <ProtectedRoute>
+                        <Register/>
+                    </ProtectedRoute>
+                }/>
                 <Route path="/questions/:id" element={<QuestionPage/>}/>
-                <Route path="/add-question" element={<AskQuestionPage/>}/>
+                <Route path="/add-question" element={
+                    <ProtectedRoute>
+                        <AskQuestionPage/>
+                    </ProtectedRoute>
+                }/>
             </Route>
         )
     )

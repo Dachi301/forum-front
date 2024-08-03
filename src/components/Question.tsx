@@ -38,11 +38,11 @@ const Question: React.FC<any> = ({
                     <div className=' relative flex flex-col gap-2'>
                         <span className='font-bold text-sm whitespace-nowrap'>{title}</span>
                         <p className='font-light text-sm'>{description}</p>
-                        <img
-                            className={'w-full max-h-[250px] object-cover'}
-                            src={questionImageSrc}
-                            alt={'Question Image'}
-                        />
+                        {/*<img*/}
+                        {/*    className={'w-full max-h-[250px] object-cover'}*/}
+                        {/*    src={questionImageSrc}*/}
+                        {/*    alt={'Question Image'}*/}
+                        {/*/>*/}
                     </div>
                     <div className='flex items-center justify-between'>
                         <div className='flex items-center gap-2'>

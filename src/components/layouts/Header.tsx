@@ -1,23 +1,29 @@
-import ForumLogo from "@/assets/icons/ForumLogo.tsx";
-import Button from "@/components/buttons/Button.tsx";
-import UserRegistrationLogo from "@/assets/icons/UserRegistrationLogo.tsx";
 import {Link, useNavigate} from "react-router-dom";
-import {useState} from "react";
-import {useSelector} from "react-redux";
+
 import createAxiosInstance from "@/axios/axios-instance.ts";
+
 import {useCookies} from "react-cookie";
+
+import {useSelector} from "react-redux";
 import {clearUserData} from "@/rdx/slices/userSlice.ts";
 import {store} from "@/rdx/store.ts";
-// import {store} from "@/rdx/store.ts";
-// import {setUserData} from "@/rdx/slices/userSlice.ts";
+
+import useClickOutside from "@/hooks/useClickOutside.ts";
+
+import Button from "@/components/buttons/Button.tsx";
+import ForumLogo from "@/assets/icons/ForumLogo.tsx";
+import UserRegistrationLogo from "@/assets/icons/UserRegistrationLogo.tsx";
+
 
 function Header() {
-    // const [cookies, setCookie] = useCookies(['user'])
     const [cookies, setCookie, removeCookie] = useCookies(['user'])
-    const [showProfileMenu, setShowProfileMenu] = useState(false)
     const user = useSelector((state) => state.user)
     const axiosInstance = createAxiosInstance(cookies.user?.token)
     const navigate = useNavigate()
+    const { ref,
+            isComponentVisible,
+            setIsComponentVisible
+    } = useClickOutside(false);
 
     return (
         <div
@@ -34,17 +40,22 @@ function Header() {
                             }}/>
                         </Link>
                         <div className={'relative'}>
-                            <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar"
-                                    className="flex text-sm bg-gray-800 rounded-full"
-                                    type="button"
-                                    onClick={() => setShowProfileMenu((prev) => !prev)}
-                            >
-                                <img className="w-8 h-8 rounded-full" src="/images/profile-pic.jpeg"
-                                     alt="user photo"/>
+                            <button
+                                onClick={() => setIsComponentVisible((prev) => !prev)}
+                                className={'flex items-center gap-2'}>
+                                    <div id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar"
+                                            className="flex text-sm bg-gray-800 rounded-full"
+                                    >
+                                        <img className="w-8 h-8 rounded-full" src="/images/profile-pic.jpeg"
+                                             alt="user photo"/>
+                                    </div>
+
+                                    <h1 className={'text-xs font-normal'}>{user.username}</h1>
                             </button>
 
-                            {showProfileMenu && (
+                            {isComponentVisible && (
                                 <div
+                                    ref={ref}
                                     className="absolute top-11 right-0 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
 
                                     <ul className="py-2 text-sm text-gray-700 dark:text-gray-200"
