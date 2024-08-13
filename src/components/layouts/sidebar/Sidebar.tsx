@@ -2,10 +2,11 @@ import InputSearchIcon from "@/assets/icons/InputSearchIcon.tsx";
 import QuestionsIcon from "@/assets/icons/QuestionsIcon.tsx";
 import AnswersIcon from "@/assets/icons/AnswersIcon.tsx";
 import LikesIcon from "@/assets/icons/LikesIcon.tsx";
-import SidebarMenuItem from "@/components/layouts/sidebar/SidebarMenuItem.tsx";
+import SidebarMenuTabs from "@/components/layouts/sidebar/SidebarMenuTabs.tsx";
 import SidebarPersonalNavigatorItem from "@/components/layouts/sidebar/SidebarPersonalNavigatorItem.tsx";
-import QuestionsMenuIcon from "@/assets/icons/QuestionsMenuIcon.tsx";
+import HomeIcon from "@/assets/icons/HomeIcon.tsx";
 import { useSelector } from "react-redux";
+import UserIcon from "@/assets/icons/UserIcon.tsx";
 
 function Sidebar() {
   let userIsAuthenticated = false;
@@ -35,7 +36,7 @@ function Sidebar() {
             >
               Menu
             </h1>
-            <SidebarMenuItem menuItem={"Home"} icon={<QuestionsMenuIcon />} />
+            <SidebarMenuTabs />
           </div>
           {Object.keys(user).length !== 0 && (
             <div className={"flex flex-col"}>
@@ -46,7 +47,7 @@ function Sidebar() {
               >
                 Personal Navigator
               </h1>
-              <div className={"flex flex-col gap-2"}>
+              <div className={"flex flex-col gap-1"}>
                 <SidebarPersonalNavigatorItem
                   menuItem={"My Questions"}
                   icon={<QuestionsIcon />}
