@@ -21,6 +21,8 @@ function Header() {
     buttonRef,
   );
 
+  const isAuthenticated = Object.keys(user).length !== 0;
+
   return (
     <div className="flex items-center justify-between w-full bg-white border-b fixed top-0 left-0 right-0 z-50 py-5 pl-12 pr-9">
       <Link to="/" className="flex items-center gap-4 cursor-pointer">
@@ -29,7 +31,7 @@ function Header() {
           Fo<span className="font-bold">rum</span>
         </h1>
       </Link>
-      {Object.keys(user).length !== 0 ? (
+      {isAuthenticated ? (
         <div className="flex items-center gap-4">
           <Link to="/add-question">
             <Button
