@@ -16,7 +16,7 @@ const QuestionsList: React.FC<any> = ({ questions }: PropsTypes) => {
           key={question.id}
           id={question.id}
           username={question.user.username}
-          userImageSrc={"/images/koba.jpeg"}
+          userImageSrc={`${apiUrl}${question.user.profile_image}`}
           time={question.created_at.slice(0, 10)}
           title={question.title}
           description={question.question}

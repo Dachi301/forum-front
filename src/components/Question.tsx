@@ -67,6 +67,8 @@ const Question: React.FC<any> = ({
       });
   };
 
+  console.log({ userImageSrc });
+
   return (
     <>
       {mainPage ? (
@@ -92,7 +94,7 @@ const Question: React.FC<any> = ({
             <p className="font-light text-sm">{description}</p>
             {questionImageSrc && (
               <img
-                className={"w-full max-h-[250px] object-cover"}
+                className={"w-full h-[350px] object-cover"}
                 src={questionImageSrc}
                 alt={"Question Image"}
               />
@@ -150,7 +152,7 @@ const Question: React.FC<any> = ({
             <p className="font-light text-sm">{description}</p>
             {questionImageSrc && (
               <img
-                className={"w-full max-h-[250px] object-cover"}
+                className={"w-full max-h-[350px] object-cover"}
                 src={questionImageSrc}
                 alt={"Question Image"}
               />

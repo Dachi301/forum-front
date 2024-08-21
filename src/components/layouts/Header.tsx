@@ -20,6 +20,7 @@ function Header() {
     false,
     buttonRef,
   );
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const isAuthenticated = Object.keys(user).length !== 0;
 
@@ -46,13 +47,10 @@ function Header() {
               onClick={() => setIsComponentVisible((prev) => !prev)}
               className="flex items-center gap-2"
             >
-              <div
-                id="dropdownUserAvatarButton"
-                className="flex text-sm bg-gray-800 rounded-full"
-              >
+              <div id="dropdownUserAvatarButton" className="flex text-sm">
                 <img
                   className="w-8 h-8 rounded-full"
-                  src="/images/profile-pic.jpeg"
+                  src={`${apiUrl}${user.profile_image}`}
                   alt="user photo"
                 />
               </div>
