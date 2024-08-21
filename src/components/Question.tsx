@@ -23,17 +23,16 @@ const Question: React.FC<any> = ({
   tags,
   views,
   comments,
-  votes,
+  likes = [],
   userImageSrc,
   mainPage,
   questionImageSrc,
 }) => {
+  const user = useSelector((state) => state.user);
   const [cookies, , removeCookie] = useCookies(["user"]);
   const [liked, setLiked] = useState<boolean>(false);
 
   const axiosInstance = createAxiosInstance(cookies.user?.token);
-
-  const user = useSelector((state) => state.user);
   const isAuthenticated = Object.keys(user).length !== 0;
 
   const notify = () =>
@@ -50,20 +49,15 @@ const Question: React.FC<any> = ({
     });
 
   useEffect(() => {
-    axiosInstance
-      .get(`/questions/${id}`)
-      .then((resp) => resp.data)
-      .then((data) => {
-        setLiked(data.likes.some((like: any) => like.user_id === user.id)); // Check if the user has liked the question
-      })
-      .catch((error) => console.log(error));
-  }, [id, user.id]);
+    if (Array.isArray(likes)) {
+      setLiked(likes.some((like: any) => like.user_id === user.id));
+    }
+  }, [likes, user.id]);
 
   const handleLikeUnlike = async () => {
     axiosInstance
       .post(`/questions/${id}/like-unlike-question`)
       .then(function (response) {
-        console.log({ response });
         if (response.status >= 200 && response.status < 300) {
           setLiked((prev) => !prev);
         }
@@ -96,11 +90,13 @@ const Question: React.FC<any> = ({
           <div className=" relative flex flex-col gap-2">
             <span className="font-bold text-sm whitespace-nowrap">{title}</span>
             <p className="font-light text-sm">{description}</p>
-            <img
-              className={"w-full max-h-[250px] object-cover"}
-              src={questionImageSrc}
-              alt={"Question Image"}
-            />
+            {questionImageSrc && (
+              <img
+                className={"w-full max-h-[250px] object-cover"}
+                src={questionImageSrc}
+                alt={"Question Image"}
+              />
+            )}
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -126,7 +122,9 @@ const Question: React.FC<any> = ({
               </div>
               <div className="flex items-center gap-1">
                 <VotesIcon />
-                <span className="text-[13px] text-[#808080]">{votes}</span>
+                <span className="text-[13px] text-[#808080]">
+                  {likes.length}
+                </span>
               </div>
             </div>
           </div>
@@ -150,11 +148,13 @@ const Question: React.FC<any> = ({
           <div className=" relative flex flex-col gap-2">
             <span className="font-bold text-sm whitespace-nowrap">{title}</span>
             <p className="font-light text-sm">{description}</p>
-            <img
-              className={"w-full max-h-[250px] object-cover"}
-              src={questionImageSrc}
-              alt={"Question Image"}
-            />
+            {questionImageSrc && (
+              <img
+                className={"w-full max-h-[250px] object-cover"}
+                src={questionImageSrc}
+                alt={"Question Image"}
+              />
+            )}
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">

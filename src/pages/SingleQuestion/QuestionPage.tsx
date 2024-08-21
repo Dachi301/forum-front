@@ -21,6 +21,8 @@ function QuestionPage() {
     return <div>Error: {error}</div>;
   }
 
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   return (
     <MainLayout>
       <div className={"flex flex-col gap-5"}>
@@ -34,9 +36,11 @@ function QuestionPage() {
           tags={data?.tags.map((tag: any) => tag.name)}
           views={123}
           comments={33}
-          votes={data?.likes}
+          likes={data?.likes}
           mainPage={false}
-          questionImageSrc={data?.image}
+          questionImageSrc={
+            data?.image !== null ? `${apiUrl}/images/${data?.image}` : null
+          }
         />
         <div className={"w-[75%]"}>
           <h1
